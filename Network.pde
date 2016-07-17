@@ -4,9 +4,14 @@ import java.util.Arrays;
 //Neural network functions and classes
 //
 
-int maxIncomingLinks = 100;
-int maxLinks = 1000;
-int maxNodes = 1000;
+int maxIncomingLinks = 100; //Max number of connections entering a single neurons
+int maxLinks = 1000; //Max connections present inside the network
+int maxNodes = 1000; //Maximum amount of node within the network
+int innovation = 0; //Global innovation number for tracking mutations
+
+float modStep = 0.1f; //Step size for a weight mutation
+float modWeight = 0.9f; //Chance that the weight will be modified instead of randomly assigned
+float modConnections = 0.25f; //The chance that all connection weights will be modified
 
 float sigmoid(float x) {
     return 2 / (1 + exp(-4.9 * x)) - 1;
@@ -19,7 +24,7 @@ class Link implements Comparable {
   boolean enabled;
   boolean input;
   boolean output;
-  int innovation;
+  int linkInnovation;
   
   Link() {
     in = 0;
@@ -28,7 +33,7 @@ class Link implements Comparable {
     enabled = true;
     input = false;
     output = false;
-    innovation = 0;
+    linkInnovation = 0;
   }
   
   public int compareTo(Object o) {
@@ -182,5 +187,38 @@ class Network {
       output[j] = neurons[i].value;
       j++;
     }
+  }
+  
+  Neuron randomNeuron(boolean isInput) {
+    ArrayList<Integer> options = new ArrayList<Integer>();
+    for(int i = 0; i < maxNodes + outputs; i++) {
+      if(neurons[i] != null) {
+        if(isInput) {
+          options.add(i);  
+        } else if(i > inputs) {
+          options.add(i);
+        }
+      }
+    }
+    
+    int index = floor(random(0, options.size()));
+    if(neurons[index] == null) {
+      return null;  
+    }
+    return neurons[index];
+  }
+  
+  void weightMutate() {
+    for(int i = 0; i < links.length; i++) {
+      if(random(0.0f, 1.0f) < modWeight) {
+        links[i].weight = links[i].weight + random(0.0f, 1.0f) * modStep * 2 - modStep;
+      } else {
+        links[i].weight = random(-2.0f, 2.0f);
+      }
+    }
+  }
+  
+  void mutate() {
+      
   }
 }
