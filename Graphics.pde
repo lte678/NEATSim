@@ -55,8 +55,7 @@ void drawNetwork(Network net, int x, int y, int objWidth, int objHeight, color b
       int neuronY = (int)(net.neurons[i].yPos * objHeight);
       
       
-      print(net.neurons[i].value);
-      fill((int)(net.neurons[i].value * 255.0f), 0, 0);
+      fill((int)constrain((net.neurons[i].value * -255.0f), 0, 255), (int)constrain((net.neurons[i].value * 255.0f), 0, 255), 0);
       
       ellipse(x + neuronX, y + neuronY, objWidth / 25, objWidth / 25);
     }

@@ -1,5 +1,9 @@
 import java.util.Arrays;
 
+//
+//Neural network functions and classes
+//
+
 int maxIncomingLinks = 100;
 int maxLinks = 1000;
 int maxNodes = 1000;
@@ -20,7 +24,7 @@ class Link implements Comparable {
   Link() {
     in = 0;
     out = 0;
-    weight = 0.0f;
+    weight = 1.0f;
     enabled = true;
     input = false;
     output = false;
@@ -96,7 +100,7 @@ class Network {
     }
     while(i < links.length) {
       links[i] = new Link();
-      links[i].out = maxNodes;
+      links[i].out = 0;
       i++;
     }
     
@@ -167,8 +171,10 @@ class Network {
     //Evaluate neuron outputs based on supplied inputs
     //
     
-    for(i = 0; i < neurons.length; i++) {
-      neurons[i].evaluate(this); //Evaluate the neurons value in this network
+    for(i = inputs + 1; i < neurons.length; i++) {
+      if(neurons[i] != null) {
+        neurons[i].evaluate(this); //Evaluate the neurons value in this network
+      }
     }
     
     int j = 0;

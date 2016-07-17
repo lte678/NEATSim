@@ -1,6 +1,7 @@
 Network testNet;
 Link[] defaultNet;
 color uiBackground;
+float[] inputs;
 
 void setup() {
   defaultNet = new Link[3];
@@ -17,6 +18,8 @@ void setup() {
   defaultNet[2].in = 5;
   defaultNet[2].out = 1000;
   
+  inputs = new float[4];
+  
   testNet = new Network(4, 3, defaultNet);
   uiBackground = color(60, 60, 60);
   
@@ -26,5 +29,15 @@ void setup() {
 
 void draw() {
   background(20, 20, 50);
+  
+  
+  if(frameCount % 60 == 0) {
+    for(int i = 0; i < inputs.length; i++) {
+      inputs[i] = random(-1.0f, 1.0f);  
+    }
+  
+    testNet.evaluate(inputs);
+  }
+  
   drawNetwork(testNet, 200, 200, 200, 200, uiBackground);
 }
